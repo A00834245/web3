@@ -1,9 +1,19 @@
-import { useState } from 'react';
+'use client'
+import { Oranienbaum } from "next/font/google";
+
+import { useState, useEffect } from 'react';
 
 type ColorKey = "gray" | "red" | "green" | "orange" | "blue";
 
 export default function Page2() {
-  const [color, setColor] = useState<ColorKey>("gray"); //crear variable para contar el estado del boton, el segundo parametro 
+  const [color, setColor] = useState<ColorKey>("gray");
+  const [nombreGuardado, setNombreGuardado] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedName = localStorage.getItem('nombreGuardado');
+    setNombreGuardado(savedName);
+  }, []);
+
   const colors = {
     blue: "bg-blue-500",
     red: "bg-red-500",
@@ -14,6 +24,11 @@ export default function Page2() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
+      {nombreGuardado && (
+          <div className="absolute top-10 right-10 text-3xl font-bold">
+            {`Hola, ${nombreGuardado}`}
+          </div>
+        )}
       <div className={`w-64 h-32 ${colors[color]} mb-4`}></div>
       <div className="grid grid-cols-2 gap-4">
         <button 
